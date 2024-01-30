@@ -16,10 +16,9 @@ struct Doctor {
     string speciality;
 };
 
-Problem currentProblem;
 
-bool matchesSpeciality(const Doctor &doctor) {
-    return doctor.speciality == currentProblem.speciality;
+bool matchesSpeciality(const Doctor &doctor,const Problem &problem) {
+    return doctor.speciality == problem.speciality;
 }
 
 int main() {
@@ -39,13 +38,12 @@ int main() {
         inFile >> d.id >> d.speciality;
     }
 
-    for (const Problem &p : problems) {
-        currentProblem = p;
-        auto it = find_if(doctors.begin(), doctors.end(), matchesSpeciality);
-
-        if (it != doctors.end()) {
-            cout << it->id << " " << p.name << endl;
-            doctors.erase(it);
+    for (Doctor d : doctors) {
+        for (Problem p : problems) {
+            if (matchesSpeciality(d, p)) {
+                cout << d.id << " " << p.name<<"\n";
+                break;
+            }
         }
     }
 
